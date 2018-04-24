@@ -1,0 +1,29 @@
+footer{
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.bottomText{
+  text-align:center;
+}
+.center {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+color:black;
+font-weight: bold;
+}
+.container-fluid{
+  text-align:left;
+}
+
+.image{
+  width:100%;
+  filter:opacity(60%);
+}
