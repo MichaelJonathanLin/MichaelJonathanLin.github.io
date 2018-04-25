@@ -24,7 +24,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position:fixed; width: 100%; z-index:10;">
-      <a class="navbar-brand" href="#">Michael Lin<? echo "Hi";?></a>
+      <a class="navbar-brand" href="#">Michael Lin</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -43,6 +43,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="Breakout.html">Breakout Game</a>
+              <a class="dropdown-item" href="MikesDrumKit.html">Drumkit</a>
               <a class="dropdown-item disabled" href="#">Pushup Counter App</a>
           </li>
         </ul>
