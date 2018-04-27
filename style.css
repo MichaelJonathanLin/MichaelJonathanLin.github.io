@@ -1,23 +1,33 @@
-footer{
+/*footer{
   position: relative;
   left: 0;
   bottom: 0;
   width: 100%;
+  height:10%;
   background-color: black;
   color: white;
   text-align: center;
-}
+}*/
 
 .bottomText{
   text-align:center;
 }
-.center {
+.centerText {
+  z-index:1;
 position: absolute;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
-color:black;
-font-weight: bold;
+color:white;
+}
+
+.centerText h1{
+  font-weight: bold;
+  font-size: 5em;
+}
+
+.centerText p{
+  font-weight: regular;
 }
 .container-fluid{
   text-align:left;
@@ -26,4 +36,18 @@ font-weight: bold;
 .image{
   width:100%;
   filter:opacity(60%);
+}
+
+.logos{
+  height:140px;
+  display:inline-block;
+}
+.tint {
+  z-index: 1;
+height: 100%;
+width: 100%;
+position: absolute;
+top: 0px;
+left: 0px;
+background: rgba(0, 0, 0, 1);
 }
