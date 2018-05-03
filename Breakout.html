@@ -1,31 +1,41 @@
 <!DOCTYPE html>
 <head>
-<title>Michael Lin</title>
-<link rel="stylesheet" type="text/css" href="style.css">
-<link rel="stylesheet"
- href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  <title>Michael Lin</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
   integrity=
   "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-   crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
- integrity=
- "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity=
+  "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
   crossorigin="anonymous"></script>
-<script
- src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
   integrity=
   "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-   crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
- integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
   crossorigin="anonymous"></script>
   <meta charset="utf-8" />
   <style>
-  * { padding: 0; margin: 0; }
+  /* * { padding: 0; margin: 0; } */
+  html, body {
+      margin: 0;
+      padding: 0;
+      background-image: url("https://i.imgur.com/eNstYNZ.gif");
+      height: 100%;
+      background-position:center;
+      background-repeat: no-repeat;
+      background-size: cover;
+  }
   canvas { background: #eee; display: block; margin-left:auto; margin-right:auto; }
   </style>
 </head>
 <body>
+  <div id="container">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position:fixed; width: 100%; z-index:10;">
     <a class="navbar-brand" href="#">Michael Lin</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,228 +63,53 @@
       </ul>
     </div>
   </nav>
-<br><br><br>
+  <br><br><br>
+  <div id="body">
+    <div class="description">
+This is a breakout game that I created using HTML canvas and Javascript.
+The canvas refreshes rapidly to produce a smooth animation. After each refresh,
+the position of the ball is compared to the position of the bricks. The bricks
+are created using an array that specifies whether it has been hit or not. If the
+ball hits one of the bricks, it's status changes so it is no longer drawn and
+no longer detected by the ball. To the user the brick just disappears.
+    </div>
   <div class="container">
     <div class="row">
-  <div class="col-xs-12">
+      <div class="col-xs-12">
 
-  <canvas id="myCanvas" width="600px" height="500px"></canvas>
+        <canvas id="myCanvas" width="600px" height="500px"></canvas>
+      </div>
+    </div>
+  </div>
 
-  <script>
-var canvas=document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-var ballRadius=10;
-//to move
-
-var x=canvas.width/2;
-var y=canvas.height-30;
-var dx=2;
-var dy=-2;
-var paddleHeight=10;
-var paddleWidth=75;
-var paddleX=(canvas.width-paddleWidth)/2;
-var rightPressed= false;
-var leftPressed=false;
-var brickRowCount = 3;
-var brickColumnCount = 6;
-var brickWidth = 75;
-var brickHeight = 20;
-var brickPadding = 10;
-var brickOffsetTop = 30;
-var brickOffsetLeft = 30;
-var fillColor="#F5B700";
-var score = 0;
-var lives = 3;
-document.addEventListener("keydown",keyDownHandler,false);
-document.addEventListener("keyup",keyUpHandler,false);
-document.addEventListener("mousemove", mouseMoveHandler, false);
-
-
-var bricks = [];
-for(c=0; c<brickColumnCount; c++) {
-    bricks[c] = [];
-    for(r=0; r<brickRowCount; r++) {
-         bricks[c][r] = { x: 0, y: 0, status: 1 };
-    }
-}
-
-function keyDownHandler(e){
-	if(e.keyCode==39){
-
-		rightPressed=true;
-
-		}
-		else if(e.keyCode==37){
-
-		leftPressed=true;
-
-		}
-
-	}
-
-function keyUpHandler(e){
-
-	if(e.keyCode==39){
-
-		rightPressed=false;
-	}
-	else if(e.keyCode==37){
-
-		leftPressed=false;
-
-		}
-	}
-
-function drawBall(){
-	ctx.beginPath();
-	ctx.arc(x,y,ballRadius,0,2*Math.PI);
-	ctx.fillstyle=fillColor;
-	ctx.fill();
-	ctx.closePath();
-	}
-
-function drawPaddle(){
-	ctx.beginPath();
-	ctx.rect(paddleX,canvas.height-paddleHeight,paddleWidth,paddleHeight);
-	ctx.fillstyle="#0095DD";
-	ctx.fill();
-	ctx.closePath();
-	}
-function drawBricks() {
-    for(c=0; c<brickColumnCount; c++) {
-        for(r=0; r<brickRowCount; r++) {
-            if(bricks[c][r].status == 1) {
-                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-                var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = fillColor;
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
-    }
-}
-function mouseMoveHandler(e) {
-    var relativeX = e.clientX - canvas.offsetLeft;
-    if(relativeX > 0 + paddleWidth/2 && relativeX < canvas.width - paddleWidth/2) {
-        paddleX = relativeX - paddleWidth/2;
-    }
-}
-function collisionDetection() {
-    for(c=0; c<brickColumnCount; c++) {
-        for(r=0; r<brickRowCount; r++) {
-            var b = bricks[c][r];
-            if(b.status == 1) {
-                if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-                    dy = -dy;
-                    b.status = 0;
-                    score=score+100;
-                    if(score == 100*brickRowCount*brickColumnCount) {
-                      alert("YOU WIN, CONGRATULATIONS! You have "+score+" points.");
-                      document.location.reload();
-                    }
-                    if(fillColor=='#F5B700'){
-                      fillColor='#04E762';
-                    }
-                    else{
-                      fillColor='#F5B700';
-                    }
-                }
-            }
-        }
-    }
-}
-
-function drawScore() {
-  ctx.font = "16px Arial";
-  ctx.fillStyle = "#0095DD";
-  ctx.fillText("Score: "+score,8,20);
-}
-
-function drawLives() {
-  ctx.font = "16px Arial";
-  ctx.fillStyle = "#0095DD";
-  ctx.fillText("Lives: "+lives, canvas.width-65, 20);
-}
-function draw(){
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-	drawBricks();
-	drawBall();
-	drawPaddle();
-  drawScore();
-  drawLives();
-	collisionDetection();
- if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-        dx = -dx;
-    }
-    if(y + dy < ballRadius) {
-        dy = -dy;
-    }
-    else if(y + dy > canvas.height-ballRadius) {
-        if(x > paddleX && x < paddleX + paddleWidth) {
-			 if(y= y-paddleHeight){
-            dy = -dy  ;
-			 }
-        }
-        else {
-            lives--;
-            if(!lives) {
-              alert ("GAME OVER");
-              document.location.reload();
-            }
-            else {
-              alert ("You lost a life");
-              x = canvas.width/2;
-              y= canvas.height-30;
-              dx = 2;
-              dy = -2;
-              paddlyX = (canvas.width-paddleWidth)/2;
-            }
-        }
-    }
-	if(rightPressed && paddleX<canvas.width-paddleWidth){
-
-		paddleX+=7;
-		}
-	 else if(leftPressed && paddleX>0 ){
-		 paddleX-=7;
-
-		 }
-
-		 x=x+dx;
-	     y=y+dy;
-       requestAnimationFrame(draw);
-	}
-
-draw();
-
-</script>
-
-</body>
-<footer class="page-footer font-small bg-dark navbar-dark  pt-4 mt-4" style="color:white">
-    <div class="container-fluid text-center text-md-left">
-        <div class="row">
-            <div class="col-md-6">
+  <script src = "Breakout.js"></script>
+</div><!--for body -->
+<div id="footer">
+        <footer class="page-footer font-small bg-dark navbar-dark  pt-4 mt-4" style="color:white">
+          <div class="container-fluid text-center text-md-left">
+            <div class="row">
+              <div class="col-md-6">
                 <h5 class="text-uppercase">Michael Lin</h5>
-                          <p>Made by Michael Lin    Email: mj2lin@edu.uwaterloo.ca    Last Updated April 26, 2018</p>
-            </div>
-            <div class="col-md-6">
+                <p>Made by Michael Lin    Email: mj2lin@edu.uwaterloo.ca    Last Updated April 26, 2018</p>
+              </div>
+              <div class="col-md-6">
                 <h5 class="text-uppercase">Links</h5>
                 <ul class="list-unstyled">
-                    <li>
+                  <li>
 
-                                <a href="https://www.linkedin.com/in/michaellinsayshi">Add me on LinkedIn <i class="fab fa-linkedin-in fa-2x"></i></a>
+                    <a href="https://www.linkedin.com/in/michaellinsayshi">Add me on LinkedIn <i class="fab fa-linkedin-in fa-2x"></i></a>
 
-                    </li>
-                    <li>
-                        <a href="https://github.com/MichaelJonathanLin/PersonalWebsite">Check out my projects on GitHub <i class="fab fa-github-square fa-2x"></i></a>
-                    </li>
+                  </li>
+                  <li>
+                    <a href="https://github.com/MichaelJonathanLin/PersonalWebsite">Check out my projects on GitHub <i class="fab fa-github-square fa-2x"></i></a>
+                  </li>
                 </ul>
+              </div>
             </div>
-        </div>
-    </div>
-</footer>
+          </div>
+        </footer>
+      </div><!-- For footer -->
+</div><!-- For container -->
+</body>
+
 </html>
